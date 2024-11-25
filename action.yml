@@ -1,0 +1,59 @@
+name: "ReadyAPI OpenAPI Specs Generator"
+description: "Generates the OpenAPI specs file for a ReadyAPI project."
+branding:
+  icon: "target"
+  color: "green"
+
+inputs: 
+
+  installDependencies:
+    description: >
+      Command to use to install dependencies before running ReadyAPI application.
+      This command gets ran as a standard shell command.
+    default: "pip install -r requirements.txt"
+    required: false
+
+  moduleDir:
+    description: >
+      The directory in which the ReadyAPI Python app lives. 
+      This should be the first folder in your project with a '__init__.py' file.
+      Needed to do 'from project import app' in subsequent steps.
+    required: true
+
+  fileName:
+    description: >
+      The file in which your ReadyAPI application gets initialized from.
+    default: "main.py"
+    required: true
+
+  appName:
+    description: >
+      The name of the ReadyAPI object inside your '{moduleDir}/{fileName}.py'.
+      This is used to do 'from {moduleDir}.{fileName} import {appName}'.
+    default: "app"
+    required: true
+
+  readyapiVersioning:
+    description: >
+      Only use this if your application uses the 'readyapi-versioning' package.
+
+      If the 'readyapi-versioning' is being used each version of your application has its own 
+      individual ReadyAPI app that is ran in conjunction. This variable defines which ReadyAPI API 
+      to use to generate the client. Use the package's VersionedReadyAPI.prefix_format string, 
+      something like 'v{number}' typically (e.g. 'v1').
+    default: null
+    required: false
+
+  outputName:
+    description: The name of the output file. Do not include extension.
+    default: "openapi"
+    required: true
+
+  outputExtension:
+    description: Output extension. May either be yaml or json.
+    default: "yaml"
+    required: true
+
+runs:
+  using: docker
+  image: Dockerfile
